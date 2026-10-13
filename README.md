@@ -1,34 +1,119 @@
-This is a Kotlin Multiplatform project targeting Android, Server.
+# PayOn
 
-* [/app/shared](./app/shared/src) is for code that will be shared across your Compose Multiplatform applications.
-  It contains several subfolders:
-  - [commonMain](./app/shared/src/commonMain/kotlin) is for code that’s common for all targets.
-  - Other folders are for Kotlin code that will be compiled for only the platform indicated in the folder name.
-    For example, if you want to use Apple’s CoreCrypto for the iOS part of your Kotlin app,
-    the [iosMain](./app/shared/src/iosMain/kotlin) folder would be the right place for such calls.
-    Similarly, if you want to edit the Desktop (JVM) specific part, the [jvmMain](./app/shared/src/jvmMain/kotlin)
-    folder is the appropriate location.
+> Offline-first mobile payment app built with **Kotlin Multiplatform** and **Jetpack Compose**, powered by an on-device sync engine.
 
-* [/core](./core/src) is for the code that will be shared between all targets in the project.
-  The most important subfolder is [commonMain](./core/src/commonMain/kotlin). If preferred, you
-  can add code to the platform-specific folders here too.
+![Kotlin](https://img.shields.io/badge/Kotlin-Multiplatform-7F52FF)
+![Compose](https://img.shields.io/badge/Compose-Multiplatform-4285F4)
+![Ktor](https://img.shields.io/badge/Ktor-on--device%20server-087CFA)
+![License](https://img.shields.io/badge/License-Apache%202.0-blue)
 
-* [/server](./server/src/main/kotlin) is for the Ktor server application.
+PayOn is the client side of a digital payment system: wallet balance, transfers, merchant payments, and notifications. It is designed **architecture-first** and **offline-first**: the app never talks to the backend directly. Every request goes through a Ktor server that runs *on the phone itself*, which syncs and stores data locally so the app is always up to date, even when it was closed.
 
-### Running the apps
-
-Use the run configurations provided by the run widget in your IDE's toolbar. You can also use these commands and options:
-
-- Android app: `./gradlew :app:androidApp:assembleDebug`
-- Server: `./gradlew :server:run`
-
-### Running tests
-
-Use the run button in your IDE's editor gutter, or run tests using Gradle tasks:
-
-- Android tests: `./gradlew :app:shared:testAndroidHostTest`
-- Server tests: `./gradlew :server:test`
+The backend lives in a separate repository: **[PayOn-Services](https://github.com/YousefMoPrince/PayOn-Services)** (Spring Boot).
 
 ---
 
-Learn more about [Kotlin Multiplatform](https://www.jetbrains.com/help/kotlin-multiplatform-dev/get-started.html)…
+## Why this architecture?
+
+The first version was a single Android module. Its WebSocket notifications died whenever the app was closed, so the app was rebuilt around a sync engine:
+
+1. When the app closes, it reports its status as **offline**.
+2. The Core Server sends a **data-only FCM push** containing only a `notificationId` and a `transactionId`. Fintech notification content never passes through FCM.
+3. The push wakes the on-device sync engine, which makes three requests:
+   - fetch the notification to display,
+   - fetch the transaction and store it in the local database,
+   - query the wallet balance (JWT) and update it locally.
+4. When the user opens the app, everything is already there.
+
+The platform-independent design also keeps a future iOS target cheap.
+
+```mermaid
+flowchart LR
+    UI[androidApp<br/>Compose UI] --> VM[shared<br/>MVI ViewModels]
+    VM --> REPO[core<br/>Repository + DTOs]
+    REPO --> SYNC[server<br/>Ktor sync engine<br/>on-device]
+    SYNC --> DB[(SQLDelight<br/>SQLCipher)]
+    SYNC <--> CORE[PayOn-Services<br/>Spring Boot]
+    FCM[FCM data push] -.-> SYNC
+```
+
+## Modules
+
+| Module | Type | Responsibility |
+|---|---|---|
+| `app/androidApp` | Android | Activities and all Android-specific dependencies |
+| `app/shared` | Compose Multiplatform | MVI building blocks: Intent, State, SideEffect, ViewModel, and screens |
+| `core` | Kotlin Multiplatform | DTOs, Repository, Network, SQLDelight |
+| `server` | Kotlin/JVM (Ktor) | On-device ClientSide-Server / sync engine that routes every API call and handles FCM-triggered background sync |
+
+Only `androidApp` depends on Android APIs. `core`, `shared` and `server` stay native Kotlin / KMP so other platforms can reuse them.
+
+## Tech Stack
+
+- **Kotlin Multiplatform**, **Jetpack / Compose Multiplatform**
+- **MVI** with `StateFlow` and `Channel`
+- **Ktor** (embedded sync engine), **Koin** (dependency injection)
+- **SQLDelight** over **SQLCipher**-encrypted SQLite
+- **Firebase Cloud Messaging** (data-only push)
+- **Gradle** (Kotlin DSL)
+
+## Getting Started
+
+### Prerequisites
+
+- Android Studio (latest stable) and JDK 17+
+- A running instance of [PayOn-Services](https://github.com/YousefMoPrince/PayOn-Services), or access to a deployed one
+- A Firebase project for FCM
+
+### Firebase setup
+
+`google-services.json` is intentionally **not** committed. Create your own Android app in the Firebase console, download its `google-services.json`, and place it at:
+
+```
+app/androidApp/google-services.json
+```
+
+### Build and run
+
+```bash
+git clone https://github.com/YousefMoPrince/PayOnApp.git
+cd PayOnApp
+
+# Android debug build
+./gradlew :app:androidApp:assembleDebug
+```
+
+On Windows use `gradlew.bat`. You can also run the `androidApp` configuration directly from Android Studio.
+
+### Run tests
+
+```bash
+./gradlew :app:shared:testAndroidHostTest   # Android host tests
+./gradlew :server:test                      # Sync engine tests
+```
+
+## Project Structure
+
+```
+PayOnApp
+├── app
+│   ├── androidApp   # Android entry point
+│   └── shared       # MVI + Compose UI
+├── core             # DTOs, repositories, networking, database
+├── server           # Ktor on-device sync engine
+├── gradle           # Version catalog and wrapper
+└── build.gradle.kts
+```
+
+## Related
+
+- **[PayOn-Services](https://github.com/YousefMoPrince/PayOn-Services)**: Spring Boot Core Server (PostgreSQL, MongoDB, Redis)
+
+## License
+
+Distributed under the Apache License 2.0. See [`LICENSE`](LICENSE) for details.
+
+## Author
+
+**Yousef Mohamed** - Software Architect & Engineer
+[GitHub](https://github.com/YousefMoPrince) · [LinkedIn](https://linkedin.com/in/yousef-elprince)
