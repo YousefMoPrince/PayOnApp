@@ -1,0 +1,17 @@
+CREATE TABLE walletEntity (
+    walletId TEXT NOT NULL PRIMARY KEY,
+    userId TEXT NOT NULL,
+    balance REAL NOT NULL,
+    accountNumber INTEGER NOT NULL,
+    walletStatus TEXT NOT NULL
+);
+
+getWallet:
+SELECT * FROM walletEntity LIMIT 1;
+
+insertOrUpdateWallet:
+INSERT OR REPLACE INTO walletEntity(walletId, userId, balance, accountNumber, walletStatus)
+VALUES (?, ?, ?, ?, ?);
+
+clearWallet:
+DELETE FROM walletEntity;

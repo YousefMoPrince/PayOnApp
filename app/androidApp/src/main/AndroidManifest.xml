@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
+    <application
+        android:name=".PayOnApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:networkSecurityConfig="@xml/network_security_config"
+        android:usesCleartextTraffic="true"
+        android:theme="@android:style/Theme.Material.Light.NoActionBar"
+        android:enableOnBackInvokedCallback="true">
+
+        <service
+            android:name=".fcm.PayOnFirebaseMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+        <activity
+            android:name=".Splash"
+            android:exported="true"
+            android:theme="@android:style/Theme.Material.Light.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".WithdrawActivity"
+            android:exported="false"
+            android:label="@string/title_activity_withdraw"
+            android:theme="@android:style/Theme.Material.Light.NoActionBar" />
+        <activity
+            android:name=".UploadThumbnailActivity"
+            android:exported="false"
+            android:label="@string/title_activity_upload_thumbnail"
+            android:theme="@android:style/Theme.Material.Light.NoActionBar" />
+        <activity
+            android:name=".TransferActivity"
+            android:exported="false"
+            android:label="@string/title_activity_transfer"
+            android:theme="@android:style/Theme.Material.Light.NoActionBar" />
+        <activity
+            android:name=".Support"
+            android:exported="false"
+            android:label="@string/title_activity_support"
+            android:theme="@android:style/Theme.Material.Light.NoActionBar" />
+        <activity
+            android:name=".SignUpActivity"
+            android:exported="false"
+            android:label="@string/title_activity_sign_up"
+            android:theme="@android:style/Theme.Material.Light.NoActionBar" />
+        <activity
+            android:name=".SignInActivity"
+            android:exported="false"
+            android:label="@string/title_activity_sign_in"
+            android:theme="@android:style/Theme.Material.Light.NoActionBar" />
+        <activity
+            android:name=".OnPayActivity"
+            android:exported="false"
+            android:label="@string/title_activity_on_pay"
+            android:theme="@android:style/Theme.Material.Light.NoActionBar" />
+        <activity
+            android:name=".Merchant"
+            android:exported="false"
+            android:label="@string/title_activity_merchant"
+            android:theme="@android:style/Theme.Material.Light.NoActionBar" />
+        <activity
+            android:name=".PersonalInformation"
+            android:exported="false"
+            android:label="@string/title_activity_personal_information"
+            android:theme="@android:style/Theme.Material.Light.NoActionBar" />
+        <activity
+            android:name=".DepositActivity"
+            android:exported="false"
+            android:label="@string/title_activity_deposit"
+            android:theme="@android:style/Theme.Material.Light.NoActionBar" />
+        <activity
+            android:name=".ContactsActivity"
+            android:exported="false"
+            android:label="@string/title_activity_contacts"
+            android:theme="@android:style/Theme.Material.Light.NoActionBar" />
+        <activity
+            android:name=".AccountActivity"
+            android:exported="false"
+            android:label="@string/title_activity_account"
+            android:theme="@android:style/Theme.Material.Light.NoActionBar" />
+
+        <activity
+            android:name=".MainActivity"
+            android:exported="false" />
+
+    </application>
+
+</manifest>

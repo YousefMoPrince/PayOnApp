@@ -1,0 +1,73 @@
+CREATE TABLE IF NOT EXISTS userSession (
+    id INTEGER PRIMARY KEY NOT NULL CHECK (id = 1),
+    userId TEXT,
+    userName TEXT NOT NULL,
+    email TEXT,
+    phoneNumber TEXT,
+    fullName TEXT,
+    thumbnailPath TEXT,
+    createdAt TEXT NOT NULL,
+    updatedAt TEXT NOT NULL,
+    token TEXT NOT NULL,
+    refreshToken TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS userDeviceToken (
+    id INTEGER PRIMARY KEY NOT NULL CHECK (id = 1),
+    token TEXT NOT NULL,
+    deviceType TEXT NOT NULL
+);
+
+insertOrUpdateSession:
+INSERT OR REPLACE INTO userSession (
+    id,
+    userId,
+    userName,
+    email,
+    phoneNumber,
+    fullName,
+    thumbnailPath,
+    createdAt,
+    updatedAt,
+    token,
+    refreshToken
+) VALUES (1, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+
+getUserSession:
+SELECT * FROM userSession WHERE id = 1;
+
+getAccessToken:
+SELECT token FROM userSession WHERE id = 1;
+
+getRefreshToken:
+SELECT refreshToken FROM userSession WHERE id = 1;
+
+updateProfileInfo:
+UPDATE userSession
+SET userName = ?,
+    email = ?,
+    phoneNumber = ?,
+    fullName = ?,
+    thumbnailPath = ?,
+    updatedAt = ?
+WHERE id = 1;
+
+updateTokens:
+UPDATE userSession
+SET token = ?,
+    refreshToken = ?,
+    updatedAt = ?
+WHERE id = 1;
+
+deleteSession:
+DELETE FROM userSession;
+
+insertOrUpdateDeviceToken:
+INSERT OR REPLACE INTO userDeviceToken (id, token, deviceType)
+VALUES (1, ?, ?);
+
+getDeviceToken:
+SELECT * FROM userDeviceToken WHERE id = 1;
+
+deleteDeviceToken:
+DELETE FROM userDeviceToken;

@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">PayOn</string>
+    <string name="title_activity_account">AccountActivity</string>
+    <string name="title_activity_contacts">ContactsActivity</string>
+    <string name="title_activity_deposit">DepositActivity</string>
+    <string name="title_activity_personal_information">PersonalInformation</string>
+    <string name="title_activity_merchant">Merchant</string>
+    <string name="title_activity_on_pay">OnPayActivity</string>
+    <string name="title_activity_sign_in">SignIn</string>
+    <string name="title_activity_sign_up">SignUp</string>
+    <string name="title_activity_support">Support</string>
+    <string name="title_activity_transfer">TransferActivity</string>
+    <string name="title_activity_upload_thumbnail">UploadThumbnailActivity</string>
+    <string name="title_activity_withdraw">WithdrawActivity</string>
+    <string name="title_activity_splash">Splash</string>
+</resources>

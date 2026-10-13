@@ -1,0 +1,19 @@
+CREATE TABLE IF NOT EXISTS contactEntity (
+    userId TEXT NOT NULL PRIMARY KEY,
+    userName TEXT NOT NULL,
+    email TEXT,
+    phoneNumber TEXT,
+    fullName TEXT,
+    thumbnailPath TEXT
+);
+
+insertOrUpdateContact:
+INSERT OR REPLACE INTO contactEntity (
+    userId, userName, email, phoneNumber, fullName, thumbnailPath
+) VALUES (?, ?, ?, ?, ?, ?);
+
+getAllContacts:
+SELECT * FROM contactEntity;
+
+deleteAllContacts:
+DELETE FROM contactEntity;

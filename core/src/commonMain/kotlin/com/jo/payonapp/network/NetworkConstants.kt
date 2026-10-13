@@ -1,0 +1,42 @@
+package com.jo.payonapp.network
+
+object NetworkConstants {
+    private const val PC_IP = "192.168.1.5:9091"
+    private const val PUBLIC_IP = "a9a5-196-138-202-165.ngrok-free.app"
+    const val Base_Url = "https://$PUBLIC_IP/"
+    const val unSafe_Base_Url = "http://$PC_IP/"
+    const val WS_Url = "wss://$PUBLIC_IP/ws/notifications"
+    const val unSafe_WS_Url = "ws://$PC_IP/ws/notifications"
+    object Endpoints {
+        const val REGISTER = "api/v2/auth/register"
+        const val REGISTER_USER_DEVICE = "/api/v2/notifications/device/register"
+        const val LOGIN = "api/v2/auth/login"
+        const val UPLOAD_THUMBNAIL = "api/v2/auth/upload-thumbnail"
+        const val Refresh_Token = "api/v2/auth/refresh"
+        const val UPDATE_PROFILE = "api/v2/auth/update"
+        const val UPDATE_USER_STATUS = "api/v2/auth/change/"
+        const val LOGOUT = "api/v2/auth/logout"
+        const val USER_PROFILE = "api/v2/auth/me"
+        const val CREATE_WALLET = "api/v2/wallet/initial"
+        const val SYNC_CONTACTS = "api/v2/wallet/syncContacts"
+        const val WALLET_INFO = "api/v2/wallet/walletInfo"
+        const val DEPOSIT = "api/v2/transactions/deposit"
+        const val WITHDRAW = "api/v2/transactions/withdraw"
+        const val TRANSFER = "api/v2/transactions/transfer"
+        const val TRANSFER_ACK = "api/v2/transactions/transfer/ack"
+        const val GET_TRANSACTION = "/api/v2/transactions/transaction"
+        const val GET_TRANSACTIONS = "api/v2/transactions/getTransactions"
+        const val BECOME_MERCHANT = "api/v2/merchant/becomeMerchant"
+        const val GET_MERCHANT_INFO = "api/v2/merchant/getMerchant"
+        const val  CREATE_RECEIPT = "/api/v2/onPay/receipts/create"
+        const val GET_CREATED_RECEIPT = "/api/v2/onPay/receipt"
+        const val GET_RECEIPTS = "api/v2/onPay/receipts"
+        const val GET_MERCHANT_RECEIPTS = "api/v2/onPay/merchant/receipts"
+        const val GET_ENTERPRISE_RECEIPTS = "api/v2/enterprise/merchant/receipts"
+        const val NOTIFICATIONS = "api/v2/notifications/recent"
+        const val UN_READ_NOTIFICATIONS = "/api/v2/notifications/recent/unread"
+        const val READ_NOTIFICATION = "/api/v2/notifications/read/"
+        const val READ_ALL_NOTIFICATION = "/api/v2/notifications/read/all"
+    }
+
+}

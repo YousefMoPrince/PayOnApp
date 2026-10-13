@@ -1,0 +1,30 @@
+CREATE TABLE notificationEntity (
+    id TEXT NOT NULL PRIMARY KEY,
+    eventType TEXT NOT NULL,
+    title TEXT NOT NULL,
+    message TEXT NOT NULL,
+    isRead INTEGER NOT NULL DEFAULT 0,
+    timestamp TEXT NOT NULL
+);
+
+getNotifications:
+SELECT * FROM notificationEntity ORDER BY timestamp DESC;
+
+insertOrReplaceNotification:
+INSERT OR REPLACE INTO notificationEntity(
+    id,
+    eventType,
+    title,
+    message,
+    isRead,
+    timestamp
+) VALUES (?, ?, ?, ?, ?, ?);
+
+markAsRead:
+UPDATE notificationEntity SET isRead = 1 WHERE id = ?;
+
+markAllAsRead:
+UPDATE notificationEntity SET isRead = 1;
+
+clearNotifications:
+DELETE FROM notificationEntity;

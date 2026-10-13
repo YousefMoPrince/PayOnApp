@@ -1,0 +1,26 @@
+CREATE TABLE transactionEntity (
+    transactionId TEXT NOT NULL PRIMARY KEY,
+    amount REAL NOT NULL,
+    type TEXT NOT NULL,
+    receiverUsername TEXT,
+    status TEXT NOT NULL,
+    idempotencyKey TEXT NOT NULL,
+    timestamp TEXT NOT NULL
+);
+
+getTransactions:
+SELECT * FROM transactionEntity ORDER BY timestamp DESC;
+
+insertOrUpdateTransaction:
+INSERT OR REPLACE INTO transactionEntity(
+    transactionId,
+    amount,
+    type,
+    receiverUsername,
+    status,
+    idempotencyKey,
+    timestamp
+) VALUES (?, ?, ?, ?, ?, ?, ?);
+
+clearTransactions:
+DELETE FROM transactionEntity;

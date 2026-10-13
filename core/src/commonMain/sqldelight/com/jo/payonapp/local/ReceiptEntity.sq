@@ -1,0 +1,41 @@
+CREATE TABLE receiptEntity (
+    transactionCode INTEGER NOT NULL PRIMARY KEY,
+    transactionId TEXT NOT NULL,
+    clientName TEXT,
+    merchantUserName TEXT NOT NULL,
+    merchantType TEXT,
+    amount REAL NOT NULL,
+    accountNumber INTEGER,
+    payerAccountNumber INTEGER,
+    currency TEXT NOT NULL,
+    idempotencyKey TEXT,
+    state TEXT,
+    createdAt TEXT,
+    updatedAt TEXT
+);
+
+getReceiptByCode:
+SELECT * FROM receiptEntity WHERE transactionCode = ?;
+
+getAllReceipts:
+SELECT * FROM receiptEntity ORDER BY createdAt DESC;
+
+insertOrUpdateReceipt:
+INSERT OR REPLACE INTO receiptEntity(
+    transactionCode,
+    transactionId,
+    clientName,
+    merchantUserName,
+    merchantType,
+    amount,
+    accountNumber,
+    payerAccountNumber,
+    currency,
+    idempotencyKey,
+    state,
+    createdAt,
+    updatedAt
+) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+
+clearReceipts:
+DELETE FROM receiptEntity;

@@ -1,0 +1,22 @@
+CREATE TABLE merchantEntity (
+    merchantId TEXT NOT NULL PRIMARY KEY,
+    merchantUserName TEXT NOT NULL,
+    merchantUrl TEXT,
+    accountNumber INTEGER NOT NULL,
+    merchantType TEXT NOT NULL
+);
+
+getMerchant:
+SELECT * FROM merchantEntity LIMIT 1;
+
+insertOrUpdateMerchant:
+INSERT OR REPLACE INTO merchantEntity(
+    merchantId,
+    merchantUserName,
+    merchantUrl,
+    accountNumber,
+    merchantType
+) VALUES (?, ?, ?, ?, ?);
+
+clearMerchant:
+DELETE FROM merchantEntity;
